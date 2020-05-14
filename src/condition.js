@@ -100,6 +100,13 @@ export default class Condition {
       .then(rightHandSideValue => {
         return almanac.factValue(this.fact, this.params, this.path)
           .then(leftHandSideValue => {
+            console.log(JSON.stringify('this.params: ' + this.params));
+            if (this.params && !this.params.caseSensitive) {
+              if (typeof rightHandSideValue === 'string' && typeof leftHandSideValue === 'string') {
+                leftHandSideValue.toLowerCase()
+                rightHandSideValue.toLowerCase()
+              }
+            }
             const result = op.evaluate(leftHandSideValue, rightHandSideValue)
             debug(`condition::evaluate <${leftHandSideValue} ${this.operator} ${rightHandSideValue}?> (${result})`)
             return { result, leftHandSideValue, rightHandSideValue, operator: this.operator }
